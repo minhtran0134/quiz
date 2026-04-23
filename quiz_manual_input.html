@@ -1,0 +1,452 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{max-width:680px;margin:0 auto;padding:1rem 0;font-family:var(--font-sans)}
+.screen{display:none}.screen.active{display:block}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.5rem;margin-bottom:1rem}
+.title{font-size:18px;font-weight:500;color:var(--color-text-primary)}
+.subtitle{font-size:13px;color:var(--color-text-secondary);margin-top:2px}
+.section-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:1rem 0}
+.row{display:flex;gap:8px;align-items:center}
+.badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.badge-info{background:#E6F1FB;color:#0C447C}
+.badge-success{background:#EAF3DE;color:#27500A}
+
+.btn{padding:9px 20px;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);transition:all 0.15s}
+.btn:hover{background:var(--color-background-secondary)}
+.btn-primary{background:#185FA5;border-color:#185FA5;color:white}
+.btn-primary:hover{background:#0C447C}
+.btn-danger{background:#FCEBEB;border-color:#A32D2D;color:#791F1F}
+.btn-danger:hover{background:#F7C1C1}
+.btn-sm{padding:5px 12px;font-size:12px}
+
+.input-field{width:100%;padding:9px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;color:var(--color-text-primary);background:var(--color-background-primary);margin-bottom:8px}
+.input-field:focus{outline:none;border-color:#378ADD;box-shadow:0 0 0 2px rgba(55,138,221,0.15)}
+select.input-field{appearance:none;cursor:pointer}
+
+.q-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:1rem;margin-bottom:8px}
+.q-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.q-num{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.option-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.option-letter{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);flex-shrink:0;cursor:pointer}
+.option-letter.correct{background:#185FA5;border-color:#185FA5;color:white}
+.option-input{flex:1;padding:7px 10px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;color:var(--color-text-primary);background:var(--color-background-primary)}
+.option-input:focus{outline:none;border-color:#378ADD}
+.correct-hint{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+
+.progress-bar{height:4px;background:var(--color-border-tertiary);border-radius:2px;margin-bottom:1.5rem}
+.progress-fill{height:100%;background:#378ADD;border-radius:2px;transition:width 0.3s}
+.timer-wrap{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.timer-wrap.urgent{color:#D85A30}
+
+.option-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);margin-bottom:8px;cursor:pointer;transition:all 0.15s;background:var(--color-background-primary)}
+.option-btn:hover{background:var(--color-background-secondary);border-color:var(--color-border-secondary)}
+.option-btn.selected{border-color:#378ADD;background:#E6F1FB}
+.option-btn.correct{border-color:#3B6D11;background:#EAF3DE}
+.option-btn.incorrect{border-color:#A32D2D;background:#FCEBEB}
+.opt-circle{width:28px;height:28px;border-radius:50%;border:0.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--color-text-secondary);flex-shrink:0}
+.option-btn.selected .opt-circle{background:#378ADD;border-color:#378ADD;color:white}
+.option-btn.correct .opt-circle{background:#3B6D11;border-color:#3B6D11;color:white}
+.option-btn.incorrect .opt-circle{background:#A32D2D;border-color:#A32D2D;color:white}
+
+.result-circle{width:100px;height:100px;border-radius:50%;border:3px solid #185FA5;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.25rem}
+.stat-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-value{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.stat-label{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+
+.review-item{padding:12px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.review-item:last-child{border-bottom:none}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.nav-dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:1rem}
+.nav-dot{width:28px;height:28px;border-radius:50%;border:0.5px solid var(--color-border-secondary);font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--color-text-secondary);background:var(--color-background-primary)}
+.nav-dot.answered{background:#185FA5;border-color:#185FA5;color:white}
+.nav-dot.current{border-color:#378ADD;color:#185FA5}
+
+.tabs{display:flex;gap:0;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.25rem}
+.tab{padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px}
+.tab.active{color:#185FA5;border-bottom-color:#185FA5}
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+.empty-state{text-align:center;padding:2rem;color:var(--color-text-secondary);font-size:14px}
+</style>
+
+<div class="app">
+
+<!-- HOME SCREEN -->
+<div id="screen-home" class="screen active">
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+      <div><div class="title">Quiz Builder</div><div class="subtitle">Tạo và làm bài trắc nghiệm</div></div>
+      <span class="badge badge-info" id="q-count-badge">0 câu hỏi</span>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('tab-create')">Tạo câu hỏi</div>
+      <div class="tab" onclick="switchTab('tab-settings')">Cài đặt bài thi</div>
+    </div>
+
+    <div id="tab-create" class="tab-panel active">
+      <div id="q-list"></div>
+      <button class="btn" style="width:100%;margin-top:4px" onclick="addQuestion()">+ Thêm câu hỏi</button>
+    </div>
+
+    <div id="tab-settings" class="tab-panel">
+      <div class="section-label">Tên bài thi</div>
+      <input class="input-field" id="quiz-name" placeholder="Ví dụ: Kiểm tra Toán 15 phút" value="Bài kiểm tra của tôi" />
+
+      <div class="row">
+        <div style="flex:1">
+          <div class="section-label">Thời gian (phút)</div>
+          <select class="input-field" id="time-select">
+            <option value="0">Không giới hạn</option>
+            <option value="5">5 phút</option>
+            <option value="10" selected>10 phút</option>
+            <option value="15">15 phút</option>
+            <option value="20">20 phút</option>
+            <option value="30">30 phút</option>
+            <option value="45">45 phút</option>
+            <option value="60">60 phút</option>
+          </select>
+        </div>
+        <div style="flex:1">
+          <div class="section-label">Xáo trộn câu hỏi</div>
+          <select class="input-field" id="shuffle-select">
+            <option value="no">Không xáo trộn</option>
+            <option value="yes">Xáo trộn ngẫu nhiên</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-label">Điểm mỗi câu đúng</div>
+      <select class="input-field" id="points-select">
+        <option value="1">1 điểm / câu</option>
+        <option value="2">2 điểm / câu</option>
+        <option value="5">5 điểm / câu</option>
+        <option value="10" selected>10 điểm / câu</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" style="width:100%" onclick="startQuiz()" id="start-btn">Bắt đầu làm bài →</button>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="screen-quiz" class="screen">
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.25rem">
+      <div class="title" id="q-title" style="font-size:15px"></div>
+      <div class="timer-wrap" id="timer-wrap" style="display:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <span id="timer-text">10:00</span>
+      </div>
+    </div>
+
+    <div class="progress-bar" style="margin-top:0.75rem">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:1rem" id="q-meta"></div>
+    <div style="font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:1.25rem;line-height:1.5" id="q-text"></div>
+    <div id="options-wrap"></div>
+
+    <div style="display:flex;justify-content:space-between;margin-top:1.25rem">
+      <button class="btn" id="prev-btn" onclick="navigate(-1)">← Câu trước</button>
+      <button class="btn btn-primary" id="next-btn" onclick="navigate(1)">Câu tiếp →</button>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-label">Danh sách câu</div>
+    <div class="nav-dots" id="nav-dots"></div>
+  </div>
+
+  <div style="display:flex;gap:8px">
+    <button class="btn" style="flex:1" onclick="confirmExit()">Thoát</button>
+    <button class="btn btn-primary" style="flex:1" onclick="submitQuiz()">Nộp bài</button>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="screen-result" class="screen">
+  <div class="card" style="text-align:center">
+    <div class="title" style="margin-bottom:1.25rem" id="res-quiz-name">Kết quả</div>
+    <div class="result-circle" id="res-circle">
+      <div style="font-size:26px;font-weight:500" id="res-pct">0%</div>
+      <div style="font-size:11px;color:var(--color-text-secondary)">Điểm số</div>
+    </div>
+    <div id="res-grade" style="font-size:16px;font-weight:500;margin-bottom:1rem"></div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value" id="res-correct" style="color:#3B6D11">0</div><div class="stat-label">Đúng</div></div>
+      <div class="stat-card"><div class="stat-value" id="res-wrong" style="color:#A32D2D">0</div><div class="stat-label">Sai</div></div>
+      <div class="stat-card"><div class="stat-value" id="res-time">—</div><div class="stat-label">Thời gian</div></div>
+    </div>
+    <div style="font-size:13px;color:var(--color-text-secondary)" id="res-points"></div>
+  </div>
+
+  <div class="card">
+    <div class="title" style="margin-bottom:1rem">Chi tiết đáp án</div>
+    <div id="review-wrap"></div>
+  </div>
+
+  <div style="display:flex;gap:8px">
+    <button class="btn" style="flex:1" onclick="showScreen('screen-home')">Về trang chủ</button>
+    <button class="btn btn-primary" style="flex:1" onclick="retake()">Làm lại</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+let questions = [];
+let quizQuestions = [];
+let userAnswers = [];
+let currentQ = 0;
+let timerInterval = null;
+let timeLeft = 0;
+let startTime = null;
+const LETTERS = ['A','B','C','D'];
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function switchTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = id==='tab-create'?0:1;
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+}
+
+function updateBadge(){
+  document.getElementById('q-count-badge').textContent = questions.length + ' câu hỏi';
+}
+
+function addQuestion(){
+  const id = Date.now();
+  questions.push({id, text:'', options:['','','',''], correct:0});
+  renderQList();
+}
+
+function removeQuestion(id){
+  questions = questions.filter(q=>q.id!==id);
+  renderQList();
+}
+
+function renderQList(){
+  updateBadge();
+  const list = document.getElementById('q-list');
+  if(questions.length===0){
+    list.innerHTML='<div class="empty-state">Chưa có câu hỏi nào.<br>Nhấn "+ Thêm câu hỏi" để bắt đầu.</div>';
+    return;
+  }
+  list.innerHTML = questions.map((q,qi)=>`
+    <div class="q-card" id="qcard-${q.id}">
+      <div class="q-card-header">
+        <span class="q-num">Câu ${qi+1}</span>
+        <button class="btn btn-sm btn-danger" onclick="removeQuestion(${q.id})">Xóa</button>
+      </div>
+      <input class="option-input" style="width:100%;margin-bottom:10px;font-size:14px;padding:8px 12px" placeholder="Nội dung câu hỏi..." value="${esc(q.text)}" oninput="updateQ(${q.id},'text',this.value)" />
+      <div class="correct-hint" style="margin-bottom:8px">Nhấn vào chữ cái để chọn đáp án đúng:</div>
+      ${q.options.map((opt,oi)=>`
+        <div class="option-row">
+          <div class="option-letter ${q.correct===oi?'correct':''}" onclick="setCorrect(${q.id},${oi})">${LETTERS[oi]}</div>
+          <input class="option-input" placeholder="Đáp án ${LETTERS[oi]}..." value="${esc(opt)}" oninput="updateOption(${q.id},${oi},this.value)" />
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function esc(s){return (s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;')}
+
+function updateQ(id,field,val){
+  const q=questions.find(q=>q.id===id);
+  if(q) q[field]=val;
+}
+
+function updateOption(id,idx,val){
+  const q=questions.find(q=>q.id===id);
+  if(q) q.options[idx]=val;
+}
+
+function setCorrect(id,idx){
+  const q=questions.find(q=>q.id===id);
+  if(!q) return;
+  q.correct=idx;
+  const card=document.getElementById('qcard-'+id);
+  card.querySelectorAll('.option-letter').forEach((el,i)=>{
+    el.classList.toggle('correct',i===idx);
+  });
+}
+
+function startQuiz(){
+  if(questions.length===0){ alert('Vui lòng thêm ít nhất 1 câu hỏi!'); return; }
+  const invalid = questions.find(q=>!q.text.trim()||q.options.some(o=>!o.trim()));
+  if(invalid){ alert('Vui lòng điền đầy đủ nội dung câu hỏi và 4 đáp án!'); return; }
+
+  quizQuestions = [...questions];
+  if(document.getElementById('shuffle-select').value==='yes'){
+    quizQuestions.sort(()=>Math.random()-0.5);
+  }
+  userAnswers = new Array(quizQuestions.length).fill(null);
+  currentQ = 0;
+  startTime = Date.now();
+
+  document.getElementById('q-title').textContent = document.getElementById('quiz-name').value || 'Bài kiểm tra';
+
+  const timeMins = parseInt(document.getElementById('time-select').value);
+  if(timeMins>0){
+    timeLeft = timeMins*60;
+    document.getElementById('timer-wrap').style.display='flex';
+    updateTimerDisplay();
+    timerInterval = setInterval(()=>{
+      timeLeft--;
+      updateTimerDisplay();
+      if(timeLeft<=0){ clearInterval(timerInterval); submitQuiz(); }
+    },1000);
+  } else {
+    document.getElementById('timer-wrap').style.display='none';
+  }
+
+  buildNavDots();
+  renderQuestion();
+  showScreen('screen-quiz');
+}
+
+function updateTimerDisplay(){
+  const m=Math.floor(timeLeft/60), s=timeLeft%60;
+  document.getElementById('timer-text').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('timer-wrap').classList.toggle('urgent',timeLeft<=60);
+}
+
+function buildNavDots(){
+  const c=document.getElementById('nav-dots');
+  c.innerHTML='';
+  quizQuestions.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='nav-dot'+(i===currentQ?' current':'')+(userAnswers[i]!==null?' answered':'');
+    d.textContent=i+1;
+    d.onclick=()=>{currentQ=i;renderQuestion()};
+    c.appendChild(d);
+  });
+}
+
+function renderQuestion(){
+  const q=quizQuestions[currentQ];
+  const total=quizQuestions.length;
+  document.getElementById('q-meta').textContent=`Câu ${currentQ+1} / ${total}`;
+  document.getElementById('q-text').textContent=q.text;
+  document.getElementById('progress-fill').style.width=`${((currentQ+1)/total)*100}%`;
+
+  const wrap=document.getElementById('options-wrap');
+  wrap.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const div=document.createElement('div');
+    div.className='option-btn'+(userAnswers[currentQ]===i?' selected':'');
+    div.innerHTML=`<div class="opt-circle">${LETTERS[i]}</div><div style="font-size:14px;color:var(--color-text-primary)">${opt}</div>`;
+    div.onclick=()=>selectAns(i);
+    wrap.appendChild(div);
+  });
+
+  document.getElementById('prev-btn').style.opacity=currentQ===0?'0.4':'1';
+  document.getElementById('next-btn').textContent=currentQ===total-1?'Xem lại':'Câu tiếp →';
+  buildNavDots();
+}
+
+function selectAns(idx){
+  userAnswers[currentQ]=idx;
+  document.querySelectorAll('.option-btn').forEach((el,i)=>{
+    el.classList.toggle('selected',i===idx);
+    el.querySelector('.opt-circle').style.background=i===idx?'#378ADD':'';
+    el.querySelector('.opt-circle').style.borderColor=i===idx?'#378ADD':'';
+    el.querySelector('.opt-circle').style.color=i===idx?'white':'';
+  });
+  buildNavDots();
+}
+
+function navigate(dir){
+  const next=currentQ+dir;
+  if(next<0||next>=quizQuestions.length) return;
+  currentQ=next; renderQuestion();
+}
+
+function confirmExit(){
+  if(confirm('Thoát bài thi? Tiến độ sẽ bị mất.')) {
+    clearInterval(timerInterval);
+    showScreen('screen-home');
+  }
+}
+
+function submitQuiz(){
+  clearInterval(timerInterval);
+  const unanswered = userAnswers.filter(a=>a===null).length;
+  if(unanswered>0 && !confirm(`Còn ${unanswered} câu chưa trả lời. Nộp bài?`)) return;
+
+  const elapsed = Math.round((Date.now()-startTime)/1000);
+  const m=Math.floor(elapsed/60), s=elapsed%60;
+  const pts = parseInt(document.getElementById('points-select').value);
+  let correct=0;
+  quizQuestions.forEach((q,i)=>{ if(userAnswers[i]===q.correct) correct++; });
+  const pct = Math.round((correct/quizQuestions.length)*100);
+  const totalPoints = correct*pts;
+  const maxPoints = quizQuestions.length*pts;
+
+  document.getElementById('res-quiz-name').textContent = document.getElementById('quiz-name').value||'Kết quả';
+  document.getElementById('res-pct').textContent = pct+'%';
+  document.getElementById('res-correct').textContent = correct;
+  document.getElementById('res-wrong').textContent = quizQuestions.length-correct;
+  document.getElementById('res-time').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('res-points').textContent = `${totalPoints} / ${maxPoints} điểm`;
+
+  let grade, color;
+  if(pct>=90){grade='Xuất sắc!';color='#3B6D11';}
+  else if(pct>=70){grade='Tốt';color='#185FA5';}
+  else if(pct>=50){grade='Trung bình';color='#BA7517';}
+  else{grade='Cần cố gắng thêm';color='#A32D2D';}
+  document.getElementById('res-grade').textContent=grade;
+  document.getElementById('res-grade').style.color=color;
+  document.getElementById('res-circle').style.borderColor=color;
+  document.getElementById('res-pct').style.color=color;
+
+  const rev=document.getElementById('review-wrap');
+  rev.innerHTML='';
+  quizQuestions.forEach((q,i)=>{
+    const ok=userAnswers[i]===q.correct;
+    const div=document.createElement('div');
+    div.className='review-item';
+    const uAns=userAnswers[i]!==null?`${LETTERS[userAnswers[i]]}. ${q.options[userAnswers[i]]}`:'Chưa trả lời';
+    div.innerHTML=`
+      <div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:6px">${i+1}. ${q.text}</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary)">
+        <div class="dot" style="background:${ok?'#639922':'#E24B4A'}"></div>
+        <span>Bạn chọn: <strong>${uAns}</strong>${!ok?` &nbsp;·&nbsp; Đáp án đúng: <strong style="color:#3B6D11">${LETTERS[q.correct]}. ${q.options[q.correct]}</strong>`:''}</span>
+      </div>
+    `;
+    rev.appendChild(div);
+  });
+
+  showScreen('screen-result');
+}
+
+function retake(){
+  userAnswers = new Array(quizQuestions.length).fill(null);
+  currentQ=0; startTime=Date.now();
+  const timeMins=parseInt(document.getElementById('time-select').value);
+  if(timeMins>0){
+    timeLeft=timeMins*60;
+    document.getElementById('timer-wrap').style.display='flex';
+    updateTimerDisplay();
+    timerInterval=setInterval(()=>{
+      timeLeft--;updateTimerDisplay();
+      if(timeLeft<=0){clearInterval(timerInterval);submitQuiz();}
+    },1000);
+  }
+  buildNavDots(); renderQuestion(); showScreen('screen-quiz');
+}
+
+renderQList();
+</script>
